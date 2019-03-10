@@ -1,27 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Title</title>
-        <!-- Required meta tags -->
-        <meta charset="utf-8" />
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
 
-        <!-- Bootstrap CSS -->
-        <link
-            rel="stylesheet"
-            href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-            integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-            crossorigin="anonymous"
-        />
-        <link
-            href="https://fonts.googleapis.com/css?family=Montserrat:500,700"
-            rel="stylesheet"
-        />
-        <style>
-            * {
+<head>
+    <title>fva.js - Form VAlidation</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:500,700" rel="stylesheet" />
+    <style>
+        * {
                 font-family: "Montserrat";
             }
             .btn {
@@ -29,129 +20,130 @@
                 color: white;
                 border-radius: 10px;
                 outline: 0;
-                padding: 10px;
                 font-weight: 700;
-                font-size: 18px;
+                font-size: 17px;
+                padding: 20px;
+            }
+            .btn:hover{
+                opacity: 0.9;
+            }
+            h4{
+                font-size: 1.3em;
             }
             body {
                 margin: 30px;
                 margin-bottom: 200px;
-                background: rgba(0, 0, 0, 0.04);
+                background: rgb(214, 214, 214);
             }
             .alert {
                 border-radius: 10px;
                 display: none;
             }
+            textarea:focus,
+            textarea.form-control:focus,
+            input.form-control:focus,
+            input[type=text]:focus,
+            input[type=password]:focus,
+            input[type=email]:focus,
+            input[type=number]:focus,
+            [type=text].form-control:focus,
+            [type=password].form-control:focus,
+            [type=email].form-control:focus,
+            [type=tel].form-control:focus,
+            [contenteditable].form-control:focus {
+            box-shadow: inset 0 0px 0 transparent;
+            }
             .form-control {
+                background: rgba(0, 0, 0, 0.05);
+                color: black !important;
                 border-radius: 10px;
-                padding: 20px;
+                padding: 30px;
+                border: none !important;
+                outline: 0 !important;
+                border: 2px solid rgb(0, 0, 0, 0.05) !important;
+            }
+            .form-control:focus {
+                border: none !important;
+                outline: 0 !important;
+                background: rgba(0, 0, 0, 0.09);
+                border: 2px solid rgb(0, 0, 0, 0.09) !important;
+            }
+            .alert-info{
+                background: blue;
+                color: white;
+                border: none;
+            }
+            .alert-danger{
+                background: rgb(190, 67, 67);
+                color: white;
+                border: none;
+            }
+            .fva-invalid{
+                border: 2px solid rgb(190, 67, 67) !important;
+            }
+            h1,h4{
+                color: black;
             }
         </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 col-md-6 mx-auto">
-                    <h4>Nome</h4>
-                    <div
-                        class="alert alert-info"
-                        role="alert"
-                        id="nameInput-rules"
-                    ></div>
-                    <div
-                        class="alert alert-danger"
-                        role="alert"
-                        id="nameInput-invalid"
-                    ></div>
-                    <input
-                        class="form-control"
-                        placeholder="Digite seu nome"
-                        type="text"
-                        name="email"
-                        id="nameInput"
-                        autocomplete="off"
-                    />
-                    <br />
-                    <h4>Email</h4>
-                    <div
-                        class="alert alert-info"
-                        role="alert"
-                        id="emailInput-rules"
-                    ></div>
-                    <div
-                        class="alert alert-danger"
-                        role="alert"
-                        id="emailInput-invalid"
-                    ></div>
-                    <input
-                        class="form-control"
-                        placeholder="Digite seu email"
-                        type="email"
-                        name="email"
-                        id="emailInput"
-                        autocomplete="off"
-                    />
-                    <br />
-                    <h4>Senha</h4>
-                    <div
-                        class="alert alert-info"
-                        role="alert"
-                        id="passwordInput-rules"
-                    ></div>
-                    <div
-                        class="alert alert-danger"
-                        role="alert"
-                        id="passwordInput-invalid"
-                    ></div>
-                    <input
-                        class="form-control"
-                        autocomplete="off"
-                        placeholder="Digite sua senha"
-                        type="password"
-                        name="password"
-                        id="passwordInput"
-                    />
-                    <br />
-                    <button class="btn btn-block" onclick="validate()">
-                        Validate
-                    </button>
-                </div>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-6 mx-auto">
+                <h1>My form</h1>
+                <h4>Type your name</h4>
+                <div class="alert alert-info" role="alert" id="nameInput-debug"></div>
+                <div class="alert alert-danger" role="alert" id="nameInput-invalid"></div>
+                <input class="form-control" placeholder="#nameInput" type="text" name="email" id="nameInput"
+                    autocomplete="off" />
+                <br />
+                <h4>Type your email</h4>
+                <div class="alert alert-info" role="alert" id="emailInput-debug"></div>
+                <div class="alert alert-danger" role="alert" id="emailInput-invalid"></div>
+                <input class="form-control" placeholder="#emailInput" type="email" name="email" id="emailInput"
+                    autocomplete="off" />
+                <br />
+                <h4>Type your password</h4>
+                <div class="alert alert-info" role="alert" id="passwordInput-debug"></div>
+                <div class="alert alert-danger" role="alert" id="passwordInput-invalid"></div>
+                <input class="form-control" autocomplete="off" placeholder="#passwordInput" type="password" name="password"
+                    id="passwordInput" />
+                <br />
+                <button class="btn btn-block" onclick="validate()">
+                    Validate form
+                </button>
             </div>
         </div>
-        <!-- Optional JavaScript -->
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script
-            src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"
-        ></script>
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-            crossorigin="anonymous"
-        ></script>
-        <script
-            src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-            crossorigin="anonymous"
-        ></script>
-        <script src="formRules.js"></script>
-        <script>
-            function validate() {
-                const emailRules = {
-                    required: true,
-                    email: true,
-                    substringIgnoreCase: "@unesp.br"
-                };
-                const passwordRules = {
-                    required: true,
-                    max: 5,
-                    min: 2
-                };
-                setInputRule("nameInput", passwordRules, true);
-                setInputRule("emailInput", emailRules);
-                setInputRule("passwordInput", passwordRules);
-            }
-        </script>
-    </body>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+    <script src="../fva.js"></script>
+    <script>
+        function validate() {
+            const emailRules = {
+                required: true,
+                email: true,
+                substringIgnoreCase: "@unesp.br"
+            };
+            const passwordRules = {
+                required: true,
+                min: 5
+            };
+            setInputRule("nameInput", {
+                required: true,
+                max: 30
+            }, true);
+            setInputRule("emailInput", emailRules);
+            setInputRule("passwordInput", passwordRules);
+        }
+    </script>
+</body>
+
 </html>
