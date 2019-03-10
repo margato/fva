@@ -30,7 +30,7 @@ function setInputRule(inputId, rules, debug = false) {
         rules.required && input.value.length > 0
             ? null
             : (valid++,
-              (invalidLabel.innerHTML = "Esse campo é obrigatório<br>"),
+              (invalidLabel.innerHTML = "This input field is required.<br>"),
               (invalidLabel.style.display = "block"));
     }
 
@@ -38,7 +38,8 @@ function setInputRule(inputId, rules, debug = false) {
         input.value.length >= rules.min
             ? null
             : (valid++,
-              (invalidLabel.innerHTML = "Mínimo de caracteres: " + rules.min),
+              (invalidLabel.innerHTML =
+                  "You have to insert at least " + rules.min + " characteres."),
               (invalidLabel.style.display = "block"));
     }
 
@@ -46,7 +47,8 @@ function setInputRule(inputId, rules, debug = false) {
         input.value.length <= rules.max
             ? null
             : (valid++,
-              (invalidLabel.innerHTML = "Máximo de caracteres: " + rules.max),
+              (invalidLabel.innerHTML =
+                  "Limit of " + rules.max + " chars reached."),
               (invalidLabel.style.display = "block"));
     }
 
@@ -57,7 +59,7 @@ function setInputRule(inputId, rules, debug = false) {
             ? null
             : (valid++,
               (invalidLabel.innerHTML =
-                  "Deve conter <u>" + rules.substringIgnoreCase + "</u>"),
+                  "It must include <u>" + rules.substringIgnoreCase + "</u>"),
               (invalidLabel.style.display = "block"));
     }
 
@@ -66,7 +68,7 @@ function setInputRule(inputId, rules, debug = false) {
             ? null
             : (valid++,
               (invalidLabel.style.display = "block"),
-              (invalidLabel.innerHTML = "Email inválido"));
+              (invalidLabel.innerHTML = "Invalid email."));
     }
 
     if (valid == 0) {
