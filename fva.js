@@ -1,10 +1,9 @@
 function validateForm(inputs) {
-    let result = 1;
+    let result = true;
     Object.keys(inputs).map(id => {
         let valid = setInputRule(id, inputs[id]);
-        if (!valid) result = 0;
+        if (!valid) result = false;
     });
-    result = Boolean(result);
     return new Promise((resolve, reject) => {
         if (result) {
             resolve();
