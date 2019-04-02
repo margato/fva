@@ -1,3 +1,20 @@
+function validateForm(inputs) {
+    let result = 1;
+    Object.keys(inputs).map(id => {
+        let valid = setInputRule(id, inputs[id]);
+        if (!valid) result = 0;
+    });
+    result = Boolean(result);
+    return new Promise((resolve, reject) => {
+        if (result) {
+            resolve();
+        } else {
+            reject(new Error("Form is not valid."));
+        }
+    });
+}
+
+
 function setInputRule(inputId, rules, debug = false) {
     let valid = 0;
 
@@ -22,61 +39,60 @@ function setInputRule(inputId, rules, debug = false) {
             inputId +
             "</span></b><br><br>" +
             JSON.stringify(rules);
-        document.querySelector("#" + inputId + "-debug").style.display =
-            "block";
+        document.querySelector("#" + inputId + "-debug").style.display = "block";
     }
 
     if ("required" in rules) {
         rules.required && input.value.length > 0
             ? null
-            : (valid++,
-              (invalidLabel.innerHTML = "This input field is required.<br>"),
-              (invalidLabel.style.display = "block"));
+            : (valid++ ,
+                (invalidLabel.innerHTML = "This input field is required.<br>"),
+                (invalidLabel.style.display = "block"));
     }
 
     if ("min" in rules) {
         input.value.length >= rules.min
             ? null
-            : (valid++,
-              (invalidLabel.innerHTML =
-                  "You have to insert at least " + rules.min + " characteres."),
-              (invalidLabel.style.display = "block"));
+            : (valid++ ,
+                (invalidLabel.innerHTML =
+                    "You have to insert at least " + rules.min + " characteres."),
+                (invalidLabel.style.display = "block"));
     }
 
     if ("max" in rules) {
         input.value.length <= rules.max
             ? null
-            : (valid++,
-              (invalidLabel.innerHTML =
-                  "Limit of " + rules.max + " chars reached."),
-              (invalidLabel.style.display = "block"));
+            : (valid++ ,
+                (invalidLabel.innerHTML = "Limit of " + rules.max + " chars reached."),
+                (invalidLabel.style.display = "block"));
     }
 
     if ("substringIgnoreCase" in rules) {
-        input.value
-            .toLowerCase()
-            .includes(rules.substringIgnoreCase.toLowerCase())
+        input.value.toLowerCase().includes(rules.substringIgnoreCase.toLowerCase())
             ? null
-            : (valid++,
-              (invalidLabel.innerHTML =
-                  "It must include <u>" + rules.substringIgnoreCase + "</u>"),
-              (invalidLabel.style.display = "block"));
+            : (valid++ ,
+                (invalidLabel.innerHTML =
+                    "It must include <u>" + rules.substringIgnoreCase + "</u>"),
+                (invalidLabel.style.display = "block"));
     }
 
     if ("email" in rules) {
         /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)
             ? null
-            : (valid++,
-              (invalidLabel.style.display = "block"),
-              (invalidLabel.innerHTML = "Invalid email."));
+            : (valid++ ,
+                (invalidLabel.style.display = "block"),
+                (invalidLabel.innerHTML = "Invalid email."));
     }
 
+    //Valid => number of times the input is invalid
     if (valid == 0) {
         invalidLabel.textContent = "";
         invalidLabel.style.display = "none";
         document.querySelector("#" + inputId + "-debug").style.display = "none";
         input.classList.remove("fva-invalid");
+        return true;
     } else {
         input.classList.add("fva-invalid");
+        return false;
     }
 }
