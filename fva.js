@@ -29,11 +29,10 @@ function setInputRule(inputId, rules, debug = false) {
     const input = document.querySelector("#" + inputId);
     let invalidLabel = document.querySelector("#" + inputId + "-invalid");
     let labelExists = invalidLabel ? true : false;
-    console.log(labelExists + ":" + JSON.stringify(invalidLabel.id));
 
     /**
      * Set an element with id `${inputId}-debug` to debug an specific set of rules
-     * Example: <p id="myForm-debug"></p>
+     * Example: <p id="myInput-debug"></p>
      */
     if (debug) {
         document.querySelector("#" + inputId + "-debug").innerHTML =
