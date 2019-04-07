@@ -22,6 +22,7 @@ function setInputRule(inputId, rules, debug = false) {
         min: 0,
         max: undefined,
         email: false,
+        number: false,
         substringIgnoreCase: undefined
     };
 
@@ -39,6 +40,14 @@ function setInputRule(inputId, rules, debug = false) {
             "</span></b><br><br>" +
             JSON.stringify(rules);
         document.querySelector("#" + inputId + "-debug").style.display = "block";
+    }
+
+    if ("number" in rules) {
+        rules.number && typeof Number(input.value) == "number"
+            ? null
+            : (valid++ ,
+                (invalidLabel.innerHTML = "This field accepts only numbers.<br>"),
+                (invalidLabel.style.display = "block"));
     }
 
     if ("required" in rules) {
@@ -66,7 +75,7 @@ function setInputRule(inputId, rules, debug = false) {
                 (invalidLabel.style.display = "block"));
     }
 
-    if ("substringIgnoreCase" in rules) {
+    if ("containsIgnoreCase" in rules) {
         input.value.toLowerCase().includes(rules.substringIgnoreCase.toLowerCase())
             ? null
             : (valid++ ,
