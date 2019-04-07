@@ -1,7 +1,7 @@
-function validateForm(inputs) {
+function validateForm(inputs, messages = undefined) {
     let result = true;
     Object.keys(inputs).map(id => {
-        let valid = setInputRule(id, inputs[id]);
+        let valid = setInputRule(id, inputs[id], messages[id]);
         if (!valid) result = false;
     });
     return new Promise((resolve, reject) => {
@@ -14,7 +14,7 @@ function validateForm(inputs) {
 }
 
 
-function setInputRule(inputId, rules, debug = false) {
+function setInputRule(inputId, rules, customErrorMessages, debug = false) {
     let valid = 0;
 
     rules = rules || {
@@ -25,6 +25,15 @@ function setInputRule(inputId, rules, debug = false) {
         number: false,
         containsIgnoreCase: undefined
     };
+
+    customErrorMessages = customErrorMessages || {
+        required: "This field is required.",
+        min: "You have to insert at least " + rules.min + " characteres.",
+        max: "Limit of " + rules.max + " chars reached.",
+        email: "Invalid email.",
+        number: "This field accepts only numbers.",
+        containsIgnoreCase: "It must include <u>" + rules.containsIgnoreCase + "</u>."
+    }
 
     const input = document.querySelector("#" + inputId);
     let invalidLabel = document.querySelector("#" + inputId + "-invalid");
@@ -48,7 +57,7 @@ function setInputRule(inputId, rules, debug = false) {
             ? null
             : (valid++ ,
                 labelExists ? (
-                    (invalidLabel.innerHTML = "This field accepts only numbers.<br>"),
+                    (invalidLabel.innerHTML = customErrorMessages.number),
                     (invalidLabel.style.display = "block")) : null);
     }
 
@@ -57,7 +66,7 @@ function setInputRule(inputId, rules, debug = false) {
             ? null
             : (valid++ ,
                 labelExists ? (
-                    (invalidLabel.innerHTML = "This field is required.<br>"),
+                    (invalidLabel.innerHTML = customErrorMessages.required),
                     (invalidLabel.style.display = "block")) : null);
     }
 
@@ -66,7 +75,7 @@ function setInputRule(inputId, rules, debug = false) {
             ? null
             : (valid++ ,
                 labelExists ? (
-                    (invalidLabel.innerHTML = "You have to insert at least " + rules.min + " characteres."),
+                    (invalidLabel.innerHTML = customErrorMessages.min),
                     (invalidLabel.style.display = "block")) : null);
     }
 
@@ -75,7 +84,7 @@ function setInputRule(inputId, rules, debug = false) {
             ? null
             : (valid++ ,
                 labelExists ? (
-                    (invalidLabel.innerHTML = "Limit of " + rules.max + " chars reached."),
+                    (invalidLabel.innerHTML = customErrorMessages.max),
                     (invalidLabel.style.display = "block")) : null);
     }
 
@@ -84,7 +93,7 @@ function setInputRule(inputId, rules, debug = false) {
             ? null
             : (valid++ ,
                 labelExists ? (
-                    (invalidLabel.innerHTML = "It must include <u>" + rules.containsIgnoreCase + "</u>."),
+                    (invalidLabel.innerHTML = customErrorMessages.containsIgnoreCase),
                     (invalidLabel.style.display = "block")) : null);
     }
 
@@ -93,17 +102,18 @@ function setInputRule(inputId, rules, debug = false) {
             ? null
             : (valid++ ,
                 labelExists ? (
-                    (invalidLabel.innerHTML = "Invalid email."),
+                    (invalidLabel.innerHTML = customErrorMessages.email),
                     (invalidLabel.style.display = "block")) : null);
     }
 
-    //Valid => number of times the input is invalid
+    //var valid: number of times the input is invalid
     if (valid == 0) {
         if (labelExists) {
             invalidLabel.textContent = "";
             invalidLabel.style.display = "none";
-            document.querySelector("#" + inputId + "-debug").style.display = "none";
             input.classList.remove("fva-invalid");
+            if (debug)
+                document.querySelector("#" + inputId + "-debug").style.display = "none";
         }
         return true;
     } else {
