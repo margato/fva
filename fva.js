@@ -23,7 +23,7 @@ function setInputRule(inputId, rules, debug = false) {
         max: undefined,
         email: false,
         number: false,
-        substringIgnoreCase: undefined
+        containsIgnoreCase: undefined
     };
 
     const input = document.querySelector("#" + inputId);
@@ -76,11 +76,11 @@ function setInputRule(inputId, rules, debug = false) {
     }
 
     if ("containsIgnoreCase" in rules) {
-        input.value.toLowerCase().includes(rules.substringIgnoreCase.toLowerCase())
+        input.value.toLowerCase().includes(rules.containsIgnoreCase.toLowerCase())
             ? null
             : (valid++ ,
                 (invalidLabel.innerHTML =
-                    "It must include <u>" + rules.substringIgnoreCase + "</u>"),
+                    "It must include <u>" + rules.containsIgnoreCase + "</u>"),
                 (invalidLabel.style.display = "block"));
     }
 
