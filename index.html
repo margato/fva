@@ -126,6 +126,9 @@
                 <button class="btn btn-block" onclick="validate()">
                     Validate form
                 </button>
+                <div style="margin-top: 20px;" class="alert alert-success" role="alert" id="success">Form
+                    validated with <b>0</b> errors.
+                </div>
             </div>
         </div>
     </div>
@@ -149,12 +152,10 @@
                 containsIgnoreCase: "@unesp.br"
             };
             const passwordRules = {
-                required: true,
-                min: 5
+                number: true
             };
             const nameRules = {
                 required: true,
-                number: true,
                 min: 2
             };
 
@@ -163,9 +164,11 @@
                 emailInput: emailRules,
                 passwordInput: passwordRules
             }).then(() => {
-                console.log("Valid form");
+                console.log("Valid form.")
+                document.querySelector("#success").style.display = "block";
             }).catch(() => {
                 console.log("Invalid form");
+                document.querySelector("#success").style.display = "none";
             });
         }
     </script>
