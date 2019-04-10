@@ -1,4 +1,4 @@
-function validateForm(inputs, messages = undefined) {
+function validateForm(inputs, messages = {}) {
     let result = true;
     Object.keys(inputs).map(id => {
         let valid = setInputRule(id, inputs[id], messages[id]);
