@@ -1,5 +1,5 @@
 const validate = (data, rules, messages = {}) => {
-    
+
     let result = true
     let globalErrors = []
 
@@ -12,21 +12,29 @@ const validate = (data, rules, messages = {}) => {
     })
 
     return new Promise((resolve, reject) => {
-        if (result) 
-            resolve(JSON.stringify({message: "Data is valid.", errors: globalErrors}, null, 2))
-        else 
-            reject(JSON.stringify({message: "Data is invalid.", errors: globalErrors}, null, 2))
+        if (result)
+            resolve(JSON.stringify({
+                message: "Data is valid.",
+                errors: globalErrors
+            }, null, 2))
+        else
+            reject(JSON.stringify({
+                message: "Data is invalid.",
+                errors: globalErrors
+            }, null, 2))
     })
 }
-
 
 const checkRule = (keyReference, value, rules, customErrorMessages) => {
     let invalid = 0
     let errors = [];
-    
+
     if (rules == undefined) {
         errors.push(`${keyReference}: Undefined rules.`)
-        return { success: false, errors}
+        return {
+            success: false,
+            errors
+        }
     }
 
     rules = rules || {
@@ -48,53 +56,61 @@ const checkRule = (keyReference, value, rules, customErrorMessages) => {
     }
 
     if ("number" in rules) {
-        (rules.number && isNaN(value))
-            ? (invalid++,
-               errors.push(customErrorMessages.number))
-            : null
+        (rules.number && isNaN(value)) ?
+        (invalid++,
+            errors.push(customErrorMessages.number)) :
+        null
     }
 
     if ("required" in rules) {
-        rules.required && value.length === 0
-            ? (invalid++,
-               errors.push(customErrorMessages.required))
-            : null
+        rules.required && value.length === 0 ?
+            (invalid++,
+                errors.push(customErrorMessages.required)) :
+            null
     }
 
     if ("min" in rules) {
-        value.length >= rules.min
-            ? null
-            : (invalid++,
-               errors.push(customErrorMessages.min))
+        value.length >= rules.min ?
+            null :
+            (invalid++,
+                errors.push(customErrorMessages.min))
     }
 
     if ("max" in rules) {
-        value.length <= rules.max
-            ? null
-            : (invalid++,
-               errors.push(customErrorMessages.max))
+        value.length <= rules.max ?
+            null :
+            (invalid++,
+                errors.push(customErrorMessages.max))
     }
 
     if ("containsIgnoreCase" in rules) {
-        value.toLowerCase().includes(rules.containsIgnoreCase.toLowerCase())
-            ? null
-            : (invalid++,
-               errors.push(customErrorMessages.containsIgnoreCase))
+        value.toLowerCase().includes(rules.containsIgnoreCase.toLowerCase()) ?
+            null :
+            (invalid++,
+                errors.push(customErrorMessages.containsIgnoreCase))
     }
 
     if ("email" in rules) {
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
-            ? null
-            : (invalid++,
-               errors.push(customErrorMessages.email))
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ?
+            null :
+            (invalid++,
+                errors.push(customErrorMessages.email))
     }
-    //var valid: number of times the value is invalid
-    if (invalid == 0) 
-        return { success: true, errors}
-    else 
-        return { success: false, errors}
+
+    //invalid: number of times the value is invalid
+    if (invalid == 0)
+        return {
+            success: true,
+            errors
+        }
+    else
+        return {
+            success: false,
+            errors
+        }
 }
 
 
-module.exports = { validate }
-
+module.exports = {
+    validate
+}

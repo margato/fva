@@ -1,8 +1,6 @@
 const fva = require("./../fva")
-
 const json = require("./data.json")
 const jsonRules = require("./dataRules")
-
 
 console.clear()
 
